@@ -20,4 +20,7 @@ message TransmitterResponse{
 service TransmitterService{
   //Unary
   rpc Transmitter(TransmitterRequest) returns(TransmitterResponse) {};
+
+  //BiDi streaming
+  rpc BloodLevelTransmitter(stream TransmitterRequest) returns(stream TransmitterResponse){};
 }

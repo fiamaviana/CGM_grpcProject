@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package proto;
+
+option java_package = "com.proto.mobileApp";
+option java_multiple_files = true;
+
+message MobileApp{
+  int32 glucoseLevel = 1;
+}
+
+message AppRequest{
+  MobileApp request = 1;
+}
+
+message AppResponse{
+  int32 result = 1;
+}
+
+service MobileService{
+  //Client Streaming
+  rpc App(stream AppRequest) returns(AppResponse) {};
+
+}

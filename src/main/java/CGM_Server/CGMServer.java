@@ -10,7 +10,7 @@ public class CGMServer {
         System.out.println("Server running...");
 
         Server server = ServerBuilder.forPort(50051)
-                .addService(new CGMServiceImpl())
+                .addService(new TransmitterServiceImpl()).addService(new AppServiceImpl()).addService(new WatchServiceImpl())
                 .build();
         server.start();
         //this will shutdown the server
