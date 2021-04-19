@@ -3,24 +3,92 @@ package CGM_Server;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
+
 import java.io.IOException;
+import java.util.Properties;
 
 public class CGMServer {
-    public static void main(String[] args) throws IOException, InterruptedException {
-        System.out.println("Server running...");
+    public static void main(String[] args) {
 
-        Server server = ServerBuilder.forPort(50051)
-                .addService(new TransmitterServiceImpl()).addService(new AppServiceImpl()).addService(new WatchServiceImpl())
-                .build();
-        server.start();
-        //this will shutdown the server
-        Runtime.getRuntime().addShutdownHook(new Thread(()->{
-            System.out.println("Received shutdown request");
-            server.shutdown();
-            System.out.println("Server stopped!");
+        //setting properties for Transmitter
+        TransmitterServiceImpl transmitterService = new TransmitterServiceImpl();
+        Properties transmitterProp = transmitterService.getProperties();
+        //registering service
+        transmitterService.registerService(transmitterProp);
+        int transmitterPort = Integer.parseInt(transmitterProp.getProperty("service_port"));
 
-        }));
-        //will wait until the program is done
-        server.awaitTermination();
+        //setting properties  for mobile app
+        AppServiceImpl appService = new AppServiceImpl();
+        Properties appProp = appService.getProperties();
+        //registering service
+        appService.registerService(appProp);
+        int appPort = Integer.parseInt(appProp.getProperty("service_port"));
+
+        //setting properties  for app
+        WatchServiceImpl watchService = new WatchServiceImpl();
+        Properties watchProp = watchService.getProperties();
+        //registering service
+        watchService.registerService(watchProp);
+        int watchPort = Integer.parseInt(watchProp.getProperty("service_port"));
+
+
+        try{
+            System.out.println("Transmitter Server is running...");
+            //build the server1 and add all services
+            Server server1 = ServerBuilder.forPort(transmitterPort).addService(new TransmitterServiceImpl())
+                    .build();
+            server1.start();
+
+            System.out.println("Mobile App Server is running...");
+            //build the server2 and add all services
+            Server server2 = ServerBuilder.forPort(appPort).addService(new AppServiceImpl())
+                    .build();
+            server2.start();
+
+            System.out.println("Watch App Server is running...");
+            //build the server2 and add all services
+            Server server3 = ServerBuilder.forPort(watchPort).addService(new WatchServiceImpl())
+                    .build();
+            server3.start();
+
+            //this will shutdown the server1
+            Runtime.getRuntime().addShutdownHook(new Thread(()->{
+                System.out.println("Received shutdown request");
+                server1.shutdown();
+                System.out.println("Server stopped!");
+
+            }));
+
+            //this will shutdown the server2
+            Runtime.getRuntime().addShutdownHook(new Thread(()->{
+                System.out.println("Received shutdown request");
+                server2.shutdown();
+                System.out.println("Server stopped!");
+
+            }));
+
+            //this will shutdown the server2
+            Runtime.getRuntime().addShutdownHook(new Thread(()->{
+                System.out.println("Received shutdown request");
+                server3.shutdown();
+                System.out.println("Server stopped!");
+
+            }));
+
+            //will wait until the program is done
+            server1.awaitTermination();
+
+            //will wait until the program is done
+            server2.awaitTermination();
+
+            //will wait until the program is done
+            server3.awaitTermination();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+
     }
 }

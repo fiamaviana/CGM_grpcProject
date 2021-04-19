@@ -33,7 +33,9 @@ dependencies {
     implementation 'io.grpc:grpc-netty-shaded:1.24.0'
     implementation 'io.grpc:grpc-protobuf:1.24.0'
     implementation 'io.grpc:grpc-stub:1.24.0'
-    implementation "io.grpc:grpc-services:1.24.0"   // reflection
+    implementation "io.grpc:grpc-services:1.24.0"
+    implementation 'org.jmdns:jmdns:3.5.6'// implementation for Jmdns
+    implementation 'org.slf4j:slf4j-nop:1.7.25' //implementation for SLF4J
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
