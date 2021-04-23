@@ -83,7 +83,8 @@ public class TransmitterServiceImpl extends TransmitterServiceGrpc.TransmitterSe
     public void transmitter(TransmitterRequest request, StreamObserver<TransmitterResponse> responseObserver) {
         //extract the fields we need
         Transmitter transmitter = request.getRequest();
-        int result = transmitter.getGlucoseLevel();
+        //convert the result to mg/dL
+        double result = transmitter.getGlucoseLevel();
         if(result >= 0){//check if the number is positive to build a response
             TransmitterResponse response = TransmitterResponse.newBuilder()
                     .setResult(result)
@@ -112,7 +113,7 @@ public class TransmitterServiceImpl extends TransmitterServiceGrpc.TransmitterSe
             //create and send the response
             @Override
             public void onNext(TransmitterRequest value) {
-                int response = value.getRequest().getGlucoseLevel();
+                double response = value.getRequest().getGlucoseLevel();
                 TransmitterResponse thisresponse = TransmitterResponse.newBuilder()
                         .setResult(response)
                         .build();

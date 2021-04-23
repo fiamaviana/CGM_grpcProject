@@ -88,7 +88,7 @@ public class CGMClient {
 
     }
 
-    private void discoverService(String service_type) {
+    public void discoverService(String service_type) {
         try {
             String address = InetAddress.getLocalHost().toString().split("/")[1];
             JmDNS jmdns = JmDNS.create(address);
@@ -128,9 +128,7 @@ public class CGMClient {
 
             jmdns.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 
@@ -140,7 +138,7 @@ public class CGMClient {
         //created a transmitter service client (blocking - synchronous)
         TransmitterServiceGrpc.TransmitterServiceBlockingStub transmitterClient = TransmitterServiceGrpc.newBlockingStub(channel);
 
-        int number = 150;
+        double number = 7.8; // the input is in mmol/L and will be converted to mg/dL
 
         try{
             //created a protocol buffer transmitter message
@@ -151,7 +149,8 @@ public class CGMClient {
             TransmitterRequest request = TransmitterRequest.newBuilder()
                     .setRequest(transmitter)
                     .build();
-            //call the RPC and get back a GreetResponse (protocol buffers)
+            //call the RPC and get back a Response (protocol buffers)
+
             TransmitterResponse response = transmitterClient.transmitter(request);
 
             System.out.println("Glucose level: " + response.getResult());
@@ -229,7 +228,7 @@ public class CGMClient {
                 //we display the response
                 try {
                     Thread.sleep(1000);
-                    System.out.println("The highest blood level was: " + value.getResult());
+                    System.out.println("The highest blood level was: " + value.getResult() + " mg/dL");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -256,7 +255,7 @@ public class CGMClient {
             requestObserver.onNext(AppRequest.newBuilder()
                     .setRequest(MobileApp.newBuilder()
                             .setGlucoseLevel(j)).build());
-            System.out.println("Sending glucose level: " + j);
+            System.out.println("Sending glucose level: " + j + " mg/dL");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -264,7 +263,6 @@ public class CGMClient {
             }
 
         }
-
         //we tell the server that client is done
         requestObserver.onCompleted();
         try { //this Thread will await 3 seconds until client is done
@@ -286,11 +284,12 @@ public class CGMClient {
             sum += j;
             count += 1;
         }
+
         double average = sum/count;
 
         try {
             Thread.sleep(1000);
-            System.out.println("The blood sugar average is: " + average);
+            System.out.println("The blood sugar average is: " + average + " mg/dL");
 
         } catch (InterruptedException e) {
             e.printStackTrace();

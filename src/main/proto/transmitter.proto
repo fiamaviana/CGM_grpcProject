@@ -6,7 +6,7 @@ option java_package = "com.proto.transmitter";
 option java_multiple_files = true;
 
 message Transmitter{
-  int32 glucoseLevel = 1;
+  double glucoseLevel = 1;
 }
 
 message TransmitterRequest{
@@ -14,7 +14,7 @@ message TransmitterRequest{
 }
 
 message TransmitterResponse{
-  int32 result = 1;
+  double result = 1;
 }
 
 service TransmitterService{

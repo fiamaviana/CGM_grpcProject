@@ -33,23 +33,23 @@ public class CGMServer {
 
 
         try{
-            System.out.println("Transmitter Server is running...");
             //build the server1 and add all services
             Server server1 = ServerBuilder.forPort(transmitterPort).addService(new TransmitterServiceImpl())
                     .build();
             server1.start();
+            System.out.println("Transmitter Service is running...");
 
-            System.out.println("Mobile App Server is running...");
             //build the server2 and add all services
             Server server2 = ServerBuilder.forPort(appPort).addService(new AppServiceImpl())
                     .build();
             server2.start();
+            System.out.println("Mobile App Service is running...");
 
-            System.out.println("Watch App Server is running...");
             //build the server2 and add all services
             Server server3 = ServerBuilder.forPort(watchPort).addService(new WatchServiceImpl())
                     .build();
             server3.start();
+            System.out.println("Watch App Service is running...");
 
             //this will shutdown the server1
             Runtime.getRuntime().addShutdownHook(new Thread(()->{
@@ -84,9 +84,7 @@ public class CGMServer {
             //will wait until the program is done
             server3.awaitTermination();
 
-        }catch(IOException e){
-            e.printStackTrace();
-        }catch(InterruptedException e){
+        }catch(IOException | InterruptedException e){
             e.printStackTrace();
         }
 
