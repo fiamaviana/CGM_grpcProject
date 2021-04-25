@@ -26,14 +26,6 @@ public class CGMClient {
 
     public int[] glucoseArray = new int[10];
 
-    public void setGlucoseArray(int[]glucoseArray){
-        this.glucoseArray = glucoseArray;
-    }
-
-    public int[] getGlucoseArray() {
-        return glucoseArray;
-    }
-
     public static void main(String[] args) {
         System.out.println("gRPC client is running");
         CGMClient main = new CGMClient();

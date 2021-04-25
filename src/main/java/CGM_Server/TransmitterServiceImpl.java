@@ -98,7 +98,7 @@ public class TransmitterServiceImpl extends TransmitterServiceGrpc.TransmitterSe
             //handling an exception in case the result is not a positive number
             responseObserver.onError(
                     Status.INVALID_ARGUMENT
-                            .withDescription("The number being sent is not positive")
+                            .withDescription("The number being sent is not positive.")
                             .augmentDescription("Number sent: " + result)
                             .asRuntimeException()
             );

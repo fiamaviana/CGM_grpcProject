@@ -165,7 +165,7 @@ public class GUI {
      */
     private void initialize() {
         frame = new JFrame();
-        frame.setTitle("Transmitter Service");
+        frame.setTitle("CGM");
         frame.setBounds(500, 500, 500, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

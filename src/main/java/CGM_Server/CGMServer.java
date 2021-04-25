@@ -10,29 +10,30 @@ import java.util.Properties;
 public class CGMServer {
     public static void main(String[] args) {
 
-        //setting properties for Transmitter
-        TransmitterServiceImpl transmitterService = new TransmitterServiceImpl();
-        Properties transmitterProp = transmitterService.getProperties();
-        //registering service
-        transmitterService.registerService(transmitterProp);
-        int transmitterPort = Integer.parseInt(transmitterProp.getProperty("service_port"));
 
-        //setting properties  for mobile app
-        AppServiceImpl appService = new AppServiceImpl();
-        Properties appProp = appService.getProperties();
-        //registering service
-        appService.registerService(appProp);
-        int appPort = Integer.parseInt(appProp.getProperty("service_port"));
-
-        //setting properties  for app
-        WatchServiceImpl watchService = new WatchServiceImpl();
-        Properties watchProp = watchService.getProperties();
-        //registering service
-        watchService.registerService(watchProp);
-        int watchPort = Integer.parseInt(watchProp.getProperty("service_port"));
 
 
         try{
+            //setting properties for Transmitter
+            TransmitterServiceImpl transmitterService = new TransmitterServiceImpl();
+            Properties transmitterProp = transmitterService.getProperties();
+            //registering service
+            transmitterService.registerService(transmitterProp);
+            int transmitterPort = Integer.parseInt(transmitterProp.getProperty("service_port"));
+
+            //setting properties  for mobile app
+            AppServiceImpl appService = new AppServiceImpl();
+            Properties appProp = appService.getProperties();
+            //registering service
+            appService.registerService(appProp);
+            int appPort = Integer.parseInt(appProp.getProperty("service_port"));
+
+            //setting properties  for app
+            WatchServiceImpl watchService = new WatchServiceImpl();
+            Properties watchProp = watchService.getProperties();
+            //registering service
+            watchService.registerService(watchProp);
+            int watchPort = Integer.parseInt(watchProp.getProperty("service_port"));
             //build the server1 and add all services
             Server server1 = ServerBuilder.forPort(transmitterPort).addService(new TransmitterServiceImpl())
                     .build();
