@@ -91,18 +91,18 @@ public class CGMClient {
 
                 @Override
                 public void serviceAdded(ServiceEvent event) {
-                    System.out.println("Transmitter Service added: " + event.getInfo());
+                    System.out.println("Service added: " + event.getInfo());
                 }
 
                 @Override
                 public void serviceRemoved(ServiceEvent event) {
-                    System.out.println("Transmitter Service removed: " + event.getInfo());
+                    System.out.println("Service removed: " + event.getInfo());
 
                 }
 
                 @Override
                 public void serviceResolved(ServiceEvent event) {
-                    System.out.println("Transmitter Service resolved: " + event.getInfo());
+                    System.out.println("Service resolved: " + event.getInfo());
                     serviceInfo = event.getInfo();
                     int port = serviceInfo.getPort();
 
@@ -130,8 +130,7 @@ public class CGMClient {
         //created a transmitter service client (blocking - synchronous)
         TransmitterServiceGrpc.TransmitterServiceBlockingStub transmitterClient = TransmitterServiceGrpc.newBlockingStub(channel);
 
-        double number = 7.8; // the input is in mmol/L and will be converted to mg/dL
-
+        double number = 15;
         try{
             //created a protocol buffer transmitter message
             Transmitter transmitter = Transmitter.newBuilder()
@@ -172,6 +171,7 @@ public class CGMClient {
             @Override
             public void onError(Throwable t) {
                 //if got an error
+                System.out.println(t);
                 latch.countDown();
             }
 
@@ -257,11 +257,7 @@ public class CGMClient {
         }
         //we tell the server that client is done
         requestObserver.onCompleted();
-        try { //this Thread will await 3 seconds until client is done
-            latch.await(3, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void ServerStreamingCall(ManagedChannel channel) {
@@ -288,8 +284,8 @@ public class CGMClient {
         }
 
         //we stream the responses (in a blocking manner)
-        stub.app(AverageRequest.newBuilder().setRequest(WatchApp.newBuilder().setGlucoseLevel(average).build()).build())
-        .forEachRemaining(analysisResponse -> System.out.println(analysisResponse.getResult()));
+            stub.app(AverageRequest.newBuilder().setRequest(WatchApp.newBuilder().setGlucoseLevel(average).build()).build())
+            .forEachRemaining(analysisResponse -> System.out.println(analysisResponse.getResult()));
 
         System.out.println("Server-side Streaming successfully completed.");
 

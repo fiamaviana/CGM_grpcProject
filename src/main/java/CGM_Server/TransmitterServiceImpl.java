@@ -43,7 +43,7 @@ public class TransmitterServiceImpl extends TransmitterServiceGrpc.TransmitterSe
     }
 
 
-    public  void registerService(Properties prop) {
+    public void registerService(Properties prop) {
 
         try {
             // Create a JmDNS instance
@@ -105,7 +105,7 @@ public class TransmitterServiceImpl extends TransmitterServiceGrpc.TransmitterSe
         }
 
     }
-    //BINARY STREAM
+    //BIDIRECTIONAL STREAM
     @Override
     public StreamObserver<TransmitterRequest> bloodLevelTransmitter(StreamObserver<TransmitterResponse> responseObserver) {
         //create an object of the request

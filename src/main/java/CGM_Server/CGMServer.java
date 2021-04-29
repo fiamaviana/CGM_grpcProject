@@ -10,9 +10,6 @@ import java.util.Properties;
 public class CGMServer {
     public static void main(String[] args) {
 
-
-
-
         try{
             //setting properties for Transmitter
             TransmitterServiceImpl transmitterService = new TransmitterServiceImpl();

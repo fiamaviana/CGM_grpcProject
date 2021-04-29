@@ -86,7 +86,6 @@ public class WatchServiceImpl extends WatchServiceGrpc.WatchServiceImplBase {
         String[] high = new String[] {"Your blood sugar level is too high. It can be caused by: ","Take too much insulin","Eat less carbohydrate than usual","Leave too long between meals"};
         String[] normal = new String[] {"Your blood sugar level is good. But you still should take some precautions: ", "Be aware of hypo symptoms and treat as necessary;",
                 "Always make sure you, your child or whoever is caring for them has access to quick acting carbs;","Make sure your child carries diabetes identification"};
-        String result = "this is a test of result that will be printed";
 
         //this statement will display messages according to the blood sugar level average
         if(average < 80){
